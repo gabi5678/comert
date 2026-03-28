@@ -18,8 +18,8 @@ export default function AdminPage() {
       setOrders(res.data);
     } catch (error) {
       console.error(error);
-      alert("Eroare la încărcarea comenzilor");
-    } finally {
+       toast.error("Error loading commands");    
+} finally {
       setLoading(false);
     }
   };
@@ -37,10 +37,10 @@ export default function AdminPage() {
       );
 
       await fetchOrders();
-      alert("Status actualizat");
+      toast.success("Status updated");
     } catch (error) {
       console.error(error);
-      alert("Eroare la actualizarea statusului");
+      toast.error("Error updating status");
     }
   };
 

@@ -31,7 +31,7 @@ export default function CheckoutPage() {
     e.preventDefault();
 
     if (items.length === 0) {
-      alert("Coșul este gol.");
+      toast.error("The cart is empty");
       return;
     }
 
@@ -40,14 +40,13 @@ export default function CheckoutPage() {
 
       const result = await checkout(formData);
 
-      alert("Comanda a fost creată cu succes");
       navigate(`/payment/${result.orderId}`);
     } catch (error) {
       console.error(error);
-      alert(
+      toast.error(
         error?.response?.data?.error ||
           error?.response?.data?.message ||
-          "Eroare la checkout"
+          "Error checkout"
       );
     } finally {
       setLoading(false);

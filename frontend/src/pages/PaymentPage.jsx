@@ -29,7 +29,7 @@ export default function PaymentPage() {
         setClientSecret(res.data.clientSecret);
       } catch (error) {
         console.error(error);
-        alert("Eroare la inițierea plății");
+        toast.error("Error payment");
       }
     };
 

@@ -28,11 +28,11 @@ export default function RegisterPage() {
     try {
       setLoading(true);
       await register(formData);
-      alert("Cont creat cu succes");
+      toast.success("account successfuly created");
       navigate("/");
     } catch (error) {
       console.error(error);
-      alert(error?.message || "Eroare la înregistrare");
+      toast.error(error?.message || "Error creating the account");
     } finally {
       setLoading(false);
     }

@@ -26,11 +26,11 @@ export default function LoginPage() {
     try {
       setLoading(true);
       await login(formData);
-      alert("Autentificare reușită");
+      toast.success("Successful authentification");
       navigate("/");
     } catch (error) {
       console.error(error);
-      alert(error?.message || "Eroare la autentificare");
+      toast.error(error?.message || "Error to authentification");
     } finally {
       setLoading(false);
     }

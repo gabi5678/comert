@@ -37,7 +37,7 @@ export default function RecommenderPage() {
       setResults(res.data.recommendations || []);
     } catch (error) {
       console.error(error);
-      alert("Eroare la recomandări");
+      toast.error("Error recommendations");
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "../services/api";
 import { useAuth } from "./AuthContext";
+import toast from "react-hot-toast";
 
 const CartContext = createContext(null);
 
@@ -42,7 +43,7 @@ export function CartProvider({ children }) {
 
   const addToCart = async (productId, quantity = 1) => {
     if (!token) {
-      alert("Trebuie să fii logat ca să adaugi produse în coș.");
+      toast.error(error?.response?.data?.message || "You need to be You must be logged in to add products to cart ");
       return;
     }
 
@@ -56,10 +57,10 @@ export function CartProvider({ children }) {
       );
 
       await fetchCart();
-      alert("Produs adăugat în coș");
+      toast.success("Product added to cart succesfully");
     } catch (error) {
       console.error("Eroare add to cart:", error);
-      alert(error?.response?.data?.message || "Eroare la adăugarea în coș");
+      toast.error(error?.response?.data?.message || "Error adding to cart");
     }
   };
 
@@ -78,7 +79,7 @@ export function CartProvider({ children }) {
       await fetchCart();
     } catch (error) {
       console.error("Eroare update cantitate:", error);
-      alert(error?.response?.data?.message || "Eroare la actualizarea cantității");
+      toast.error(error?.response?.data?.message || "Error updating quantity");
     }
   };
 
@@ -92,9 +93,7 @@ export function CartProvider({ children }) {
 
       await fetchCart();
     } catch (error) {
-      console.error("Eroare remove item:", error);
-      alert(error?.response?.data?.message || "Eroare la ștergerea produsului");
-    }
+      toast.error(error?.response?.data?.message || "Error deleting product");    }
   };
 
   const clearCart = async () => {
@@ -108,8 +107,7 @@ export function CartProvider({ children }) {
       await fetchCart();
     } catch (error) {
       console.error("Eroare clear cart:", error);
-      alert(error?.response?.data?.message || "Eroare la golirea coșului");
-    }
+      toast.error(error?.response?.data?.message || "Error emptying the trash");    }
   };
 
   const checkout = async (shippingAddress) => {

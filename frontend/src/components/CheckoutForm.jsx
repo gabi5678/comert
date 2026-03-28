@@ -30,8 +30,8 @@ export default function CheckoutForm({ orderId }) {
     });
 
     if (error) {
-      alert(error.message);
-      setLoading(false);
+    toast.error(error?.response?.data?.message || "Error check out");      
+    setLoading(false);
       return;
     }
 
@@ -46,13 +46,11 @@ export default function CheckoutForm({ orderId }) {
         }
       );
 
-      // 🔥 ALERT + REDIRECT
-      alert("Comanda ta a fost finalizată cu succes! 🎉");
-
+      toast.success("Your order has been completed successfully! ");
       navigate("/"); // homepage
     } catch (err) {
       console.error(err);
-      alert("Plata a fost făcută, dar backend-ul nu a confirmat.");
+      toast.error(error?.response?.data?.message || "Error order");
     }
 
     setLoading(false);
