@@ -1,17 +1,26 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { motion } from "motion/react";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
 
   return (
-    <div className="group rounded-[28px] bg-white p-4 shadow-md transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+    <motion.div
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.25 }}
+      className="group rounded-[28px] bg-white p-4 shadow-md hover:shadow-2xl"
+    >
       <Link to={`/product/${product.id}`}>
-        <img
-          src={product.images?.[0] || "https://via.placeholder.com/400x400?text=Product"}
-          alt={product.name}
-          className="mb-4 h-64 w-full rounded-[24px] object-cover"
-        />
+        <div className="overflow-hidden rounded-[24px]">
+          <motion.img
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.35 }}
+            src={product.images?.[0] || "https://via.placeholder.com/400x400?text=Product"}
+            alt={product.name}
+            className="mb-4 h-64 w-full object-cover"
+          />
+        </div>
       </Link>
 
       <div className="space-y-1">
@@ -40,6 +49,6 @@ export default function ProductCard({ product }) {
       >
         Add to Cart
       </button>
-    </div>
+    </motion.div>
   );
 }

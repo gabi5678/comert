@@ -105,6 +105,65 @@ export default function RecommenderPage() {
             </button>
           </div>
         </form>
+
+        {/* <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <select
+    name="productType"
+    value={formData.productType}
+    onChange={handleChange}
+    className="rounded-2xl border border-pink-100 px-4 py-3 outline-none focus:border-pink-400"
+  >
+    <option value="">Choose product type</option>
+    <option value="fond de ten">Fond de ten</option>
+    <option value="concealer">Concealer</option>
+    <option value="ruj">Ruj</option>
+    <option value="mascara">Mascara</option>
+    <option value="skincare">Skincare</option>
+  </select>
+
+  <select
+    name="skinType"
+    value={formData.skinType}
+    onChange={handleChange}
+    className="rounded-2xl border border-pink-100 px-4 py-3 outline-none focus:border-pink-400"
+  >
+    <option value="">Choose skin type</option>
+    <option value="gras">Gras</option>
+    <option value="mixt">Mixt</option>
+    <option value="uscat">Uscat</option>
+    <option value="normal">Normal</option>
+  </select>
+
+  <select
+    name="finish"
+    value={formData.finish}
+    onChange={handleChange}
+    className="rounded-2xl border border-pink-100 px-4 py-3 outline-none focus:border-pink-400"
+  >
+    <option value="">Choose finish</option>
+    <option value="matte">Matte</option>
+    <option value="natural">Natural</option>
+  </select>
+
+  <input
+    type="number"
+    name="maxPrice"
+    placeholder="Max price"
+    value={formData.maxPrice}
+    onChange={handleChange}
+    className="rounded-2xl border border-pink-100 px-4 py-3 outline-none focus:border-pink-400"
+  />
+
+  <div className="md:col-span-2 xl:col-span-4">
+    <button
+      type="submit"
+      disabled={loading}
+      className="rounded-full bg-pink-600 px-8 py-3 font-semibold text-white transition hover:bg-pink-500 disabled:opacity-60"
+    >
+      {loading ? "Searching..." : "Get Recommendations"}
+    </button>
+  </div>
+</form> */}
       </div>
 
       {results.length === 0 ? (
