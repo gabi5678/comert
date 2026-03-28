@@ -4,8 +4,13 @@ import HomePage from "../pages/HomePage";
 import ShopPage from "../pages/ShopPage";
 import ProductPage from "../pages/ProductPage";
 import CartPage from "../pages/CartPage";
+import CheckoutPage from "../pages/CheckoutPage";
+import PaymentPage from "../pages/PaymentPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import AdminPage from "../pages/AdminPage";
+import AdminRoute from "../components/AdminRoute";
+import RecommenderPage from "../pages/RecommenderPage";
 
 export const router = createBrowserRouter([
   {
@@ -16,8 +21,12 @@ export const router = createBrowserRouter([
       { path: "shop", element: <ShopPage /> },
       { path: "product/:id", element: <ProductPage /> },
       { path: "cart", element: <CartPage /> },
+      { path: "checkout", element: <CheckoutPage /> },
+      { path: "payment/:orderId", element: <PaymentPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "recommender", element: <RecommenderPage /> },
+      { path: "admin", element: (<AdminRoute> <AdminPage /> </AdminRoute>),},
     ],
   },
 ]);

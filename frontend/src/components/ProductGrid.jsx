@@ -1,7 +1,9 @@
 import { useProducts } from "../hooks/useProducts";
+import { useCart } from "../context/CartContext";
 
 export default function ProductGrid() {
   const { products, loading } = useProducts();
+  const { addToCart } = useCart();
 
   if (loading) {
     return (
@@ -47,7 +49,10 @@ export default function ProductGrid() {
               {product.price} RON
             </div>
 
-            <button className="mt-4 w-full rounded-full bg-pink-600 py-2 text-white transition hover:bg-pink-500">
+            <button
+              onClick={() => addToCart(product.id, 1)}
+              className="mt-4 w-full rounded-full bg-pink-600 py-2 text-white transition hover:bg-pink-500"
+            >
               Add to Cart
             </button>
           </div>
