@@ -1,0 +1,7 @@
+Card number: 4242 4242 4242 4242
+Exp: orice dată viitoare (ex: 12/30)
+CVC: orice (ex: 123)
+ZIP: orice
+
+admin@makeupshop.ro / Admin123!
+client@makeupshop.ro / Client123!
