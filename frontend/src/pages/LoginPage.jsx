@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, user, profile, authLoading } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -12,6 +13,14 @@ export default function LoginPage() {
   });
 
   const [loading, setLoading] = useState(false);
+
+useEffect(() => {
+  if (authLoading) return;
+
+  if (user && profile) {
+    navigate(profile.role === "admin" ? "/admin" : "/");
+  }
+}, [user, profile, authLoading, navigate]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -26,19 +35,18 @@ export default function LoginPage() {
     try {
       setLoading(true);
       await login(formData);
-      toast.success("Successful authentification");
-      navigate("/");
+      toast.success("Successful authentication");
     } catch (error) {
       console.error(error);
-      toast.error(error?.message || "Error to authentification");
+      toast.error(error?.message || "Error to authentication");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="mx-auto max-w-md px-6 py-16">
-      <div className="rounded-[32px] bg-white p-8 shadow-xl">
+    <section className="mx-auto flex min-h-[75vh] max-w-md items-center px-6 py-16">
+      <div className="w-full rounded-[32px] bg-white p-8 shadow-xl">
         <h1 className="mb-2 text-3xl font-black text-gray-900">Login</h1>
         <p className="mb-8 text-gray-500">Intră în contul tău Glowify</p>
 

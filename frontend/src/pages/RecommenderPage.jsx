@@ -40,22 +40,22 @@ const shadeGroups = [
       {
         code: "LM-01",
         image:
-          "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-190w_360x.jpg?v=1774864972",
       },
       {
         code: "LM-02",
         image:
-          "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-200c_360x.jpg?v=1774864972",
       },
       {
         code: "LM-03",
         image:
-          "https://images.unsplash.com/photo-1512316609839-ce289d3eba0a?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-210n_360x.jpg?v=1774864972",
       },
       {
         code: "LM-04",
         image:
-          "https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-230n_360x.jpg?v=1774864972",
       },
     ],
   },
@@ -67,22 +67,22 @@ const shadeGroups = [
       {
         code: "MD-01",
         image:
-          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-280n_360x.jpg?v=1774864972",
       },
       {
         code: "MD-02",
         image:
-          "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-300c_360x.jpg?v=1774864972",
       },
       {
         code: "MD-03",
         image:
-          "https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-290n_360x.jpg?v=1774864972",
       },
       {
         code: "MD-04",
         image:
-          "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-310w_360x.jpg?v=1774864972",
       },
     ],
   },
@@ -94,22 +94,22 @@ const shadeGroups = [
       {
         code: "MT-01",
         image:
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-340c_360x.jpg?v=1774864972",
       },
       {
         code: "MT-02",
         image:
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-350c_360x.jpg?v=1774864972",
       },
       {
         code: "MT-03",
         image:
-          "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-360w_360x.jpg?v=1774864972",
       },
       {
         code: "MT-04",
         image:
-          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-390c_360x.jpg?v=1774864972",
       },
     ],
   },
@@ -121,22 +121,22 @@ const shadeGroups = [
       {
         code: "MDP-01",
         image:
-          "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-430w_360x.jpg?v=1774864972",
       },
       {
         code: "MDP-02",
         image:
-          "https://images.unsplash.com/photo-1512316609839-ce289d3eba0a?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-440c_360x.jpg?v=1774864972",
       },
       {
         code: "MDP-03",
         image:
-          "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-460w_360x.jpg?v=1774864972",
       },
       {
         code: "MDP-04",
         image:
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-470c_360x.jpg?v=1774864972",
       },
     ],
   },
@@ -148,22 +148,22 @@ const shadeGroups = [
       {
         code: "DP-01",
         image:
-          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-500n_360x.jpg?v=1774864972",
       },
       {
         code: "DP-02",
         image:
-          "https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-520w_360x.jpg?v=1774864972",
       },
       {
         code: "DP-03",
         image:
-          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-540c_360x.jpg?v=1774865544",
       },
       {
         code: "DP-04",
         image:
-          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=80",
+          "https://www.rarebeauty.com/cdn/shop/files/shadefinder-model-550c_360x.jpg?v=1774865544",
       },
     ],
   },
