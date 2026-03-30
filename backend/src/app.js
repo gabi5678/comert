@@ -11,6 +11,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const recommenderRoutes = require('./routes/recommenderRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 const app = express();
 
@@ -76,6 +77,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/recommender', recommenderRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 
 const errorMiddleware = require('./middleware/errorMiddleware');

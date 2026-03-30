@@ -11,6 +11,7 @@ import RegisterPage from "../pages/RegisterPage";
 import AdminPage from "../pages/AdminPage";
 import AdminRoute from "../components/AdminRoute";
 import RecommenderPage from "../pages/RecommenderPage";
+import MyOrdersPage  from "../pages/MyOrdersPage";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
       { path: "recommender", element: <RecommenderPage /> },
+      { path: "my-orders", element:<MyOrdersPage/>},
       { path: "admin", element: (<AdminRoute> <AdminPage /> </AdminRoute>),},
     ],
   },

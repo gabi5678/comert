@@ -1,59 +1,62 @@
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useState } from "react";
-import {
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
-
-import { useAuth } from "../context/AuthContext";
-import { api } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { api } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function CheckoutForm({ orderId }) {
   const stripe = useStripe();
   const elements = useElements();
-  const { token } = useAuth();
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!stripe || !elements) return;
-
-    setLoading(true);
-
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-    });
-
-    if (error) {
-    toast.error(error?.response?.data?.message || "Error check out");      
-    setLoading(false);
+    if (!stripe || !elements) {
+      toast.error("Stripe is not ready yet");
       return;
     }
 
     try {
-      await api.post(
-        `/payments/confirm/${orderId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      setLoading(true);
 
-      toast.success("Your order has been completed successfully! ");
-      navigate("/"); // homepage
-    } catch (err) {
-      console.error(err);
-      toast.error(error?.response?.data?.message || "Error order");
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
+      });
+
+      if (error) {
+        toast.error(error.message || "Payment failed");
+        return;
+      }
+
+      if (paymentIntent?.status === "succeeded") {
+        await api.post(
+          `/payments/confirm/${orderId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        toast.success("Comanda ta a fost finalizată cu succes!");
+        navigate("/");
+        return;
+      }
+
+      toast("Payment is processing...");
+    } catch (error) {
+      console.error(error);
+      toast.error("Payment error");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -61,8 +64,9 @@ export default function CheckoutForm({ orderId }) {
       <PaymentElement />
 
       <button
+        type="submit"
         disabled={!stripe || loading}
-        className="w-full rounded-full bg-pink-600 py-4 text-white font-semibold hover:bg-pink-500"
+        className="w-full rounded-full bg-pink-600 py-4 text-base font-semibold text-white transition hover:bg-pink-500 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {loading ? "Processing..." : "Pay now"}
       </button>

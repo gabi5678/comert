@@ -1,54 +1,43 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { motion } from "motion/react";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
 
   return (
-    <motion.div
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.25 }}
-      className="group rounded-[28px] bg-white p-4 shadow-md hover:shadow-2xl"
-    >
-      <Link to={`/product/${product.id}`}>
-        <div className="overflow-hidden rounded-[24px]">
-          <motion.img
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.35 }}
-            src={product.images?.[0] || "https://via.placeholder.com/400x400?text=Product"}
-            alt={product.name}
-            className="mb-4 h-64 w-full object-cover"
-          />
-        </div>
+    <div className="group rounded-[30px] bg-white p-4 shadow-md transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+      <Link to={`/product/${product.id}`} className="block overflow-hidden rounded-[24px] bg-pink-50">
+        <img
+          src={product.images?.[0] || "https://via.placeholder.com/300"}
+          alt={product.name}
+          className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"
+        />
       </Link>
 
-      <div className="space-y-1">
-        <p className="text-xs uppercase tracking-[0.2em] text-pink-500">
+      <div className="pt-4">
+        <p className="mb-2 text-xs uppercase tracking-[0.25em] text-pink-500">
           {product.brand || "Beauty"}
         </p>
 
-        <Link to={`/product/${product.id}`}>
-          <h3 className="line-clamp-2 text-lg font-bold text-gray-900 transition group-hover:text-pink-600">
-            {product.name}
-          </h3>
-        </Link>
+        <h3 className="line-clamp-2 min-h-[64px] text-2xl font-black leading-tight text-gray-900">
+          {product.name}
+        </h3>
 
-        <p className="line-clamp-2 min-h-[40px] text-sm text-gray-500">
+        <p className="mt-2 line-clamp-3 min-h-[72px] text-sm leading-6 text-gray-500">
           {product.description || "Premium beauty product."}
         </p>
 
-        <div className="pt-2 text-xl font-black text-pink-600">
+        <div className="mt-4 text-2xl font-black text-pink-600">
           {product.price} RON
         </div>
-      </div>
 
-      <button
-        onClick={() => addToCart(product.id, 1)}
-        className="mt-4 w-full rounded-full bg-pink-600 py-3 text-sm font-semibold text-white transition hover:bg-pink-500"
-      >
-        Add to Cart
-      </button>
-    </motion.div>
+        <button
+          onClick={() => addToCart(product.id, 1)}
+          className="mt-5 w-full rounded-full bg-pink-600 py-3 text-sm font-semibold text-white transition hover:bg-pink-500"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
   );
 }

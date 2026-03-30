@@ -37,6 +37,16 @@ export default function Navbar() {
       <Link to="/recommender" className="text-sm font-medium hover:text-pink-600">
         Recommender
       </Link>
+
+      {user && (
+        <Link
+          to="/my-orders"
+          className="text-sm font-semibold text-gray-700 hover:text-pink-600 transition"
+        >
+          My Orders
+        </Link>
+      )}
+
     </>
   )}
 

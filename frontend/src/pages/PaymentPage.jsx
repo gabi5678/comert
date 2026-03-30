@@ -1,21 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { api } from "../services/api";
-
 import { Elements } from "@stripe/react-stripe-js";
-import { stripePromise } from "../lib/stripe";
+import { loadStripe } from "@stripe/stripe-js";
+import { api } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import CheckoutForm from "../components/CheckoutForm";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 export default function PaymentPage() {
   const { orderId } = useParams();
   const { token } = useAuth();
 
-  const [clientSecret, setClientSecret] = useState(null);
+  const [clientSecret, setClientSecret] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const createPaymentIntent = async () => {
+    const createIntent = async () => {
       try {
+        setLoading(true);
+
         const res = await api.post(
           `/payments/create-payment-intent/${orderId}`,
           {},
@@ -28,28 +32,56 @@ export default function PaymentPage() {
 
         setClientSecret(res.data.clientSecret);
       } catch (error) {
-        console.error(error);
-        toast.error("Error payment");
+        console.error("Eroare PaymentIntent:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     if (orderId && token) {
-      createPaymentIntent();
+      createIntent();
     }
   }, [orderId, token]);
 
-  if (!clientSecret) {
-    return <p className="p-10">Loading payment...</p>;
+  const options = useMemo(() => {
+    if (!clientSecret) return null;
+
+    return {
+      clientSecret,
+      appearance: {
+        theme: "stripe",
+        variables: {
+          colorPrimary: "#ec4899",
+          borderRadius: "16px",
+        },
+      },
+    };
+  }, [clientSecret]);
+
+  if (loading) {
+    return (
+      <section className="mx-auto max-w-3xl px-6 py-16">
+        <div className="rounded-[32px] bg-white p-10 shadow-lg">
+          <p className="text-gray-500">Loading payment...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (!clientSecret || !options) {
+    return (
+      <section className="mx-auto max-w-3xl px-6 py-16">
+        <div className="rounded-[32px] bg-white p-10 shadow-lg">
+          <p className="text-red-500">Payment could not be initialized.</p>
+        </div>
+      </section>
+    );
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-6 py-16">
-      <div className="rounded-[32px] bg-white p-10 shadow-xl">
-        <h1 className="mb-6 text-4xl font-black text-gray-900">
-          Complete Payment
-        </h1>
-
-        <Elements stripe={stripePromise} options={{ clientSecret }}>
+    <section className="mx-auto max-w-3xl px-6 py-16">
+      <div className="rounded-[32px] bg-white p-8 shadow-lg">
+        <Elements stripe={stripePromise} options={options} key={clientSecret}>
           <CheckoutForm orderId={orderId} />
         </Elements>
       </div>

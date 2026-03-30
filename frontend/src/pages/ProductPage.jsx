@@ -24,14 +24,14 @@ export default function ProductPage() {
   if (productLoading) {
     return (
       <section className="mx-auto max-w-7xl px-6 py-12">
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div className="animate-pulse rounded-[32px] bg-white p-6 shadow-lg">
-            <div className="h-[520px] rounded-[24px] bg-gray-200" />
+        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="animate-pulse rounded-[36px] bg-white p-6 shadow-lg">
+            <div className="h-[560px] rounded-[28px] bg-gray-200" />
           </div>
-          <div className="animate-pulse rounded-[32px] bg-white p-6 shadow-lg">
+          <div className="animate-pulse rounded-[36px] bg-white p-8 shadow-lg">
             <div className="mb-4 h-6 w-24 rounded bg-gray-200" />
-            <div className="mb-4 h-10 w-2/3 rounded bg-gray-200" />
-            <div className="mb-4 h-5 w-1/3 rounded bg-gray-200" />
+            <div className="mb-4 h-12 w-2/3 rounded bg-gray-200" />
+            <div className="mb-4 h-6 w-1/3 rounded bg-gray-200" />
             <div className="mb-6 h-20 w-full rounded bg-gray-200" />
             <div className="h-12 w-full rounded-full bg-gray-200" />
           </div>
@@ -43,7 +43,7 @@ export default function ProductPage() {
   if (productError || !product) {
     return (
       <section className="mx-auto max-w-4xl px-6 py-16">
-        <div className="rounded-[28px] bg-white p-10 text-center shadow-lg">
+        <div className="rounded-[32px] bg-white p-10 text-center shadow-lg">
           <h1 className="mb-3 text-3xl font-black text-gray-900">
             Product not found
           </h1>
@@ -57,13 +57,22 @@ export default function ProductPage() {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-12">
-      <div className="grid gap-8 lg:grid-cols-2">
-        <div className="rounded-[32px] bg-white p-6 shadow-lg">
-          <div className="mb-4 overflow-hidden rounded-[24px] bg-pink-50">
+      <div className="mb-10 rounded-[36px] bg-gradient-to-r from-pink-300 via-pink-200 to-rose-200 px-8 py-10 shadow-xl">
+        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-pink-700">
+          Product Details
+        </p>
+        <h1 className="text-4xl font-black text-gray-900 md:text-5xl">
+          {product.name}
+        </h1>
+      </div>
+
+      <div className="grid items-start gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="rounded-[36px] bg-white p-6 shadow-lg">
+          <div className="mb-4 overflow-hidden rounded-[28px] bg-pink-50">
             <img
               src={gallery[selectedImage]}
               alt={product.name}
-              className="h-[520px] w-full object-cover"
+              className="h-[560px] w-full object-cover"
             />
           </div>
 
@@ -74,7 +83,7 @@ export default function ProductPage() {
                 onClick={() => setSelectedImage(index)}
                 className={`overflow-hidden rounded-2xl border-2 transition ${
                   selectedImage === index
-                    ? "border-pink-500"
+                    ? "border-pink-500 shadow-md"
                     : "border-transparent"
                 }`}
               >
@@ -88,30 +97,53 @@ export default function ProductPage() {
           </div>
         </div>
 
-        <div className="rounded-[32px] bg-white p-8 shadow-lg">
+        <div className="rounded-[36px] bg-white p-8 shadow-lg">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-pink-500">
             {product.brand || "Beauty"}
           </p>
 
-          <h1 className="mb-4 text-4xl font-black leading-tight text-gray-900">
+          <h2 className="mb-4 text-4xl font-black leading-tight text-gray-900">
             {product.name}
-          </h1>
+          </h2>
 
           <div className="mb-4 text-3xl font-black text-pink-600">
             {product.price} RON
           </div>
 
+          {product.averageRating > 0 && (
+            <div className="mb-5 flex items-center justify-between rounded-2xl bg-pink-50 px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div className="text-pink-500">
+                  {"★".repeat(Math.round(product.averageRating))}
+                  <span className="text-pink-200">
+                    {"★".repeat(5 - Math.round(product.averageRating))}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600">
+                  {product.averageRating}/5
+                </p>
+              </div>
+
+              <p className="text-sm text-gray-500">
+                {product.reviewsCount || 0} reviews
+              </p>
+            </div>
+          )}
+
           <div className="mb-6">
             <StockBadge stock={product.stock} />
           </div>
 
-          <p className="mb-6 text-gray-600">
-            {product.description || "Premium beauty product designed to enhance your routine."}
+          <p className="mb-6 text-base leading-7 text-gray-600">
+            {product.description ||
+              "Premium beauty product designed to enhance your routine."}
           </p>
 
           {Array.isArray(product.skinType) && product.skinType.length > 0 && (
-            <div className="mb-4">
-              <p className="mb-2 text-sm font-semibold text-gray-900">Skin type</p>
+            <div className="mb-5">
+              <p className="mb-2 text-sm font-semibold text-gray-900">
+                Skin type
+              </p>
               <div className="flex flex-wrap gap-2">
                 {product.skinType.map((type) => (
                   <span
@@ -151,9 +183,12 @@ export default function ProductPage() {
         </div>
       </div>
 
-      <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="mt-10">
         <ProductInfoTabs product={product} />
-        <ProductReviews />
+      </div>
+
+      <div className="mt-10">
+        <ProductReviews productId={product.id} />
       </div>
     </section>
   );

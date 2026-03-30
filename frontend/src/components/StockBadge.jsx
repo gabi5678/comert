@@ -9,7 +9,7 @@ export default function StockBadge({ stock }) {
           : "bg-red-100 text-red-700"
       }`}
     >
-      {inStock ? `In stock: ${stock}` : "Out of stock"}
+      {inStock ? `In stock` : "Out of stock"}
     </div>
   );
 }

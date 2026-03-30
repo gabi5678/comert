@@ -6,7 +6,7 @@ export default function ProductInfoTabs({ product }) {
   const tabs = [
     { key: "description", label: "Description" },
     { key: "details", label: "Details" },
-    { key: "howToUse", label: "How to use" },
+
   ];
 
   return (
@@ -66,12 +66,6 @@ export default function ProductInfoTabs({ product }) {
         </div>
       )}
 
-      {activeTab === "howToUse" && (
-        <div className="text-gray-600">
-          Apply evenly on clean skin and blend using a brush, sponge, or fingertips.
-          Build coverage gradually for a natural finish.
-        </div>
-      )}
     </div>
   );
 }

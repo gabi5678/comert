@@ -52,13 +52,28 @@ export default function Hero() {
             className="relative"
           >
             <div className="rounded-[32px] bg-white/55 p-5 shadow-2xl backdrop-blur-md">
-              <div className="grid h-[420px] place-items-center rounded-[26px] bg-[linear-gradient(135deg,#f9a8d4_0%,#fbcfe8_40%,#fecdd3_100%)]">
-                <div className="text-center">
-                  <p className="text-sm uppercase tracking-[0.3em] text-pink-700">
+              <div className="group relative h-[480px] overflow-hidden rounded-[26px]">
+                <img
+                  src="https://www.conceptsnc.com/wp-content/uploads/2023/12/naj-oleari-studio-concept-still-life.webp"
+                  alt="Glowify beauty collection"
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-pink-500/20 to-pink-100/20 transition duration-500 group-hover:from-black/10 group-hover:via-transparent group-hover:to-transparent" />
+
+                <div className="absolute left-0 top-0 w-full px-6 pt-6 text-center transition duration-500 group-hover:opacity-0 group-hover:-translate-y-4">
+                  <p className="text-sm uppercase tracking-[0.35em] text-white/90">
                     Glowify Collection
                   </p>
-                  <p className="mt-3 text-3xl font-black text-white">
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full p-6 transition duration-500 group-hover:opacity-0 group-hover:translate-y-6">
+                  <p className="max-w-sm text-4xl font-black leading-tight text-white drop-shadow-lg">
                     Beauty, but make it iconic
+                  </p>
+                  <p className="mt-3 max-w-md text-sm text-white/85">
+                    Premium textures, radiant finishes and beauty essentials
+                    curated for your perfect look.
                   </p>
                 </div>
               </div>
@@ -83,7 +98,7 @@ export default function Hero() {
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-pink-500">
                 Personalized
               </p>
-              <p className="text-sm font-bold text-gray-900">AI-like Recommender</p>
+              <p className="text-sm font-bold text-gray-900">Recommender</p>
             </motion.div>
           </motion.div>
         </div>

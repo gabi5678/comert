@@ -13,11 +13,11 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
 
   const [selectedCategory, setSelectedCategory] = useState(
-    searchParams.get("categoryId") || ""
+    searchParams.get("categoryId") || "",
   );
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [onlyFeatured, setOnlyFeatured] = useState(
-    searchParams.get("featured") === "true"
+    searchParams.get("featured") === "true",
   );
 
   const queryObject = useMemo(() => {
@@ -75,8 +75,8 @@ export default function ShopPage() {
           Discover Our Makeup Collection
         </h1>
         <p className="max-w-2xl text-gray-700">
-          Explore premium beauty products, trending essentials și produse potrivite
-          pentru rutina ta.
+          Explore premium beauty products, trending essentials and products that
+          fit your routine.
         </p>
       </div>
 
@@ -121,7 +121,7 @@ export default function ShopPage() {
                 No products found
               </h3>
               <p className="text-gray-500">
-                Încearcă alte filtre sau resetează căutarea.
+                Try other filters or reset your search.{" "}
               </p>
             </div>
           ) : (
