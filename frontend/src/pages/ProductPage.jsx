@@ -134,10 +134,6 @@ export default function ProductPage() {
             <StockBadge stock={product.stock} />
           </div>
 
-          <p className="mb-6 text-base leading-7 text-gray-600">
-            {product.description ||
-              "Premium beauty product designed to enhance your routine."}
-          </p>
 
           {Array.isArray(product.skinType) && product.skinType.length > 0 && (
             <div className="mb-5">

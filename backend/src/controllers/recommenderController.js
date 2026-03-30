@@ -1,9 +1,7 @@
 const { db } = require('../config/firebase');
 
 const normalizeText = (value) => {
-  return String(value || '')
-    .trim()
-    .toLowerCase();
+  return String(value || '').trim().toLowerCase();
 };
 
 const getMakeupRecommendations = async (req, res) => {
@@ -18,12 +16,10 @@ const getMakeupRecommendations = async (req, res) => {
       ...doc.data()
     }));
 
-    // filtrare după buget
     if (maxPrice !== undefined && maxPrice !== null && maxPrice !== '') {
       products = products.filter(product => Number(product.price) <= Number(maxPrice));
     }
 
-    // dacă avem productType, încercăm să potrivim cu numele categoriei sau numele produsului
     if (productType) {
       const normalizedProductType = normalizeText(productType);
 
@@ -34,8 +30,8 @@ const getMakeupRecommendations = async (req, res) => {
       }));
 
       const matchedCategory = categories.find(category =>
-        normalizeText(category.name).includes(normalizedProductType) ||
-        normalizeText(category.slug).includes(normalizedProductType)
+        normalizeText(category.name) === normalizedProductType ||
+        normalizeText(category.slug) === normalizedProductType
       );
 
       if (matchedCategory) {
@@ -49,7 +45,6 @@ const getMakeupRecommendations = async (req, res) => {
       }
     }
 
-    // filtrare după finish
     if (finish) {
       const normalizedFinish = normalizeText(finish);
 
@@ -58,7 +53,6 @@ const getMakeupRecommendations = async (req, res) => {
       );
     }
 
-    // filtrare după skinType
     if (skinType) {
       const normalizedSkinType = normalizeText(skinType);
 
@@ -69,7 +63,6 @@ const getMakeupRecommendations = async (req, res) => {
       });
     }
 
-    // scor simplu de relevanță
     const scoredProducts = products.map(product => {
       let score = 0;
 
@@ -130,6 +123,74 @@ const getMakeupRecommendations = async (req, res) => {
   }
 };
 
+const getRecommenderFilters = async (req, res) => {
+  try {
+    const productsSnapshot = await db
+      .collection('products')
+      .where('isActive', '==', true)
+      .get();
+
+    const products = productsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    const categoryIdsInUse = [...new Set(
+      products
+        .map(product => product.categoryId)
+        .filter(Boolean)
+    )];
+
+    let categories = [];
+
+    if (categoryIdsInUse.length > 0) {
+      const categoryDocs = await Promise.all(
+        categoryIdsInUse.map(categoryId =>
+          db.collection('categories').doc(categoryId).get()
+        )
+      );
+
+      categories = categoryDocs
+        .filter(doc => doc.exists)
+        .map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+        .sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
+    }
+
+    const skinTypes = [...new Set(
+      products.flatMap(product =>
+        Array.isArray(product.skinType)
+          ? product.skinType.map(type => String(type).trim()).filter(Boolean)
+          : []
+      )
+    )].sort((a, b) => a.localeCompare(b));
+
+    const finishes = [...new Set(
+      products
+        .map(product => String(product.finish || '').trim())
+        .filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b));
+
+    res.status(200).json({
+      productTypes: categories.map(category => ({
+        id: category.id,
+        name: category.name,
+        slug: category.slug || ''
+      })),
+      skinTypes,
+      finishes
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Eroare la preluarea filtrelor pentru recommender',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
-  getMakeupRecommendations
+  getMakeupRecommendations,
+  getRecommenderFilters
 };

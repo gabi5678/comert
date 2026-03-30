@@ -1,5 +1,4 @@
-import { useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";import { motion, AnimatePresence } from "motion/react";
 import { api } from "../services/api";
 import ProductCard from "../components/ProductCard";
 import toast from "react-hot-toast";
@@ -316,6 +315,34 @@ export default function RecommenderPage() {
     maxPrice: "",
   });
 
+  const [filterOptions, setFilterOptions] = useState({
+  productTypes: [],
+  skinTypes: [],
+  finishes: [],
+});
+const [filtersLoading, setFiltersLoading] = useState(true);
+
+useEffect(() => {
+  const fetchFilterOptions = async () => {
+    try {
+      setFiltersLoading(true);
+      const res = await api.get("/recommender/filters");
+      setFilterOptions({
+        productTypes: res.data.productTypes || [],
+        skinTypes: res.data.skinTypes || [],
+        finishes: res.data.finishes || [],
+      });
+    } catch (error) {
+      console.error("Eroare la încărcarea filtrelor:", error);
+      toast.error("Nu am putut încărca filtrele");
+    } finally {
+      setFiltersLoading(false);
+    }
+  };
+
+  fetchFilterOptions();
+}, []);
+
   const [activeGroupId, setActiveGroupId] = useState(shadeGroups[0].id);
   const [selectedShadeCode, setSelectedShadeCode] = useState("");
   const [results, setResults] = useState([]);
@@ -495,45 +522,50 @@ export default function RecommenderPage() {
           onSubmit={handleSubmit}
           className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"
         >
-          <select
-            name="productType"
-            value={formData.productType}
-            onChange={handleChange}
-            className="rounded-2xl border border-pink-100 bg-pink-50/30 px-4 py-3 outline-none transition focus:border-pink-400"
-          >
-            <option value="">Choose product type</option>
-            <option value="fond de ten">Fond de ten</option>
-            <option value="foundation">Foundation</option>
-            <option value="concealer">Concealer</option>
-            <option value="ruj">Ruj</option>
-            <option value="lipstick">Lipstick</option>
-            <option value="mascara">Mascara</option>
-            <option value="skincare">Skincare</option>
-          </select>
+<select
+  name="productType"
+  value={formData.productType}
+  onChange={handleChange}
+  disabled={filtersLoading}
+  className="rounded-2xl border border-pink-100 bg-pink-50/30 px-4 py-3 outline-none transition focus:border-pink-400 disabled:opacity-60"
+>
+  <option value="">Choose product type</option>
+  {filterOptions.productTypes.map((category) => (
+    <option key={category.id} value={category.slug || category.name}>
+      {category.name}
+    </option>
+  ))}
+</select>
 
-          <select
-            name="skinType"
-            value={formData.skinType}
-            onChange={handleChange}
-            className="rounded-2xl border border-pink-100 bg-pink-50/30 px-4 py-3 outline-none transition focus:border-pink-400"
-          >
-            <option value="">Choose skin type</option>
-            <option value="normal">Normal</option>
-            <option value="uscat">Uscat</option>
-            <option value="mixt">Mixt</option>
-            <option value="gras">Gras</option>
-          </select>
+<select
+  name="skinType"
+  value={formData.skinType}
+  onChange={handleChange}
+  disabled={filtersLoading}
+  className="rounded-2xl border border-pink-100 bg-pink-50/30 px-4 py-3 outline-none transition focus:border-pink-400 disabled:opacity-60"
+>
+  <option value="">Choose skin type</option>
+  {filterOptions.skinTypes.map((skinType) => (
+    <option key={skinType} value={skinType}>
+      {skinType}
+    </option>
+  ))}
+</select>
 
-          <select
-            name="finish"
-            value={formData.finish}
-            onChange={handleChange}
-            className="rounded-2xl border border-pink-100 bg-pink-50/30 px-4 py-3 outline-none transition focus:border-pink-400"
-          >
-            <option value="">Choose finish</option>
-            <option value="natural">Natural</option>
-            <option value="matte">Matte</option>
-          </select>
+<select
+  name="finish"
+  value={formData.finish}
+  onChange={handleChange}
+  disabled={filtersLoading}
+  className="rounded-2xl border border-pink-100 bg-pink-50/30 px-4 py-3 outline-none transition focus:border-pink-400 disabled:opacity-60"
+>
+  <option value="">Choose finish</option>
+  {filterOptions.finishes.map((finish) => (
+    <option key={finish} value={finish}>
+      {finish}
+    </option>
+  ))}
+</select>
 
           <input
             type="number"

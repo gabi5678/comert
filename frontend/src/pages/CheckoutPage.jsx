@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import toast from "react-hot-toast";
 
 export default function CheckoutPage() {
   const { cart, checkout } = useCart();

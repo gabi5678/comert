@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import {
-  Instagram,
-  Facebook,
+  // Instagram,
   Mail,
   Phone,
   MapPin,
@@ -22,24 +21,7 @@ export default function Footer() {
             </p>
 
             <div className="mt-5 flex items-center gap-3">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full bg-pink-50 p-2 text-pink-600 transition hover:bg-pink-100"
-              >
-                <Instagram size={18} />
-              </a>
-
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full bg-pink-50 p-2 text-pink-600 transition hover:bg-pink-100"
-              >
-                <Facebook size={18} />
-              </a>
-
+  
               <a
                 href="mailto:contact@glowify.ro"
                 className="rounded-full bg-pink-50 p-2 text-pink-600 transition hover:bg-pink-100"

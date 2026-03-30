@@ -8,7 +8,6 @@ const fs = require('fs');
 const SHIPPING_COST = 20;
 const CURRENCY = 'RON';
 
-
 const createOrderFromCart = async (req, res) => {
   try {
     const userId = req.user.uid;
@@ -45,12 +44,22 @@ const createOrderFromCart = async (req, res) => {
         throw new Error('Coșul este gol');
       }
 
+      // 1. Citește toate produsele mai întâi
+      const productRefs = cartItems.map(item =>
+        db.collection('products').doc(item.productId)
+      );
+
+      const productDocs = await Promise.all(
+        productRefs.map(productRef => transaction.get(productRef))
+      );
+
+      // 2. Validează și pregătește datele
       const validatedItems = [];
       let subtotal = 0;
 
-      for (const item of cartItems) {
-        const productRef = db.collection('products').doc(item.productId);
-        const productDoc = await transaction.get(productRef);
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+        const productDoc = productDocs[i];
 
         if (!productDoc.exists) {
           throw new Error(`Produsul cu ID ${item.productId} nu mai există`);
@@ -77,11 +86,6 @@ const createOrderFromCart = async (req, res) => {
           price: currentPrice,
           quantity: item.quantity,
           image: product.images?.[0] || ''
-        });
-
-        transaction.update(productRef, {
-          stock: Number(product.stock) - Number(item.quantity),
-          updatedAt: admin.firestore.FieldValue.serverTimestamp()
         });
       }
 
@@ -112,6 +116,19 @@ const createOrderFromCart = async (req, res) => {
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
         updatedAt: admin.firestore.FieldValue.serverTimestamp()
       };
+
+      // 3. Abia acum faci toate write-urile
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+        const productDoc = productDocs[i];
+        const product = productDoc.data();
+        const productRef = productRefs[i];
+
+        transaction.update(productRef, {
+          stock: Number(product.stock) - Number(item.quantity),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+      }
 
       transaction.set(orderRef, orderData);
 
@@ -171,6 +188,8 @@ const createOrderFromCart = async (req, res) => {
     });
   }
 };
+
+
 const getMyOrders = async (req, res) => {
   try {
     const userId = req.user.uid;
