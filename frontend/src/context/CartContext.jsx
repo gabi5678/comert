@@ -43,7 +43,7 @@ export function CartProvider({ children }) {
 
   const addToCart = async (productId, quantity = 1) => {
     if (!token) {
-      toast.error(error?.response?.data?.message || "You need to be You must be logged in to add products to cart ");
+      toast.error("You must be logged in to add products to cart ");
       return;
     }
 
