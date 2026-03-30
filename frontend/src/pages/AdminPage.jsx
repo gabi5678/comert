@@ -28,6 +28,8 @@ export default function AdminPage() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
+  const [sortOrder, setSortOrder] = useState(null);
+
   const [ordersLoading, setOrdersLoading] = useState(true);
   const [productsLoading, setProductsLoading] = useState(true);
 
@@ -84,7 +86,7 @@ export default function AdminPage() {
         { orderStatus },
         {
           headers: authHeaders,
-        }
+        },
       );
 
       await fetchOrders();
@@ -125,7 +127,9 @@ export default function AdminPage() {
       discountPercent: product.discountPercent ?? "",
       shades: Array.isArray(product.shades) ? product.shades.join(", ") : "",
       finish: product.finish || "",
-      skinType: Array.isArray(product.skinType) ? product.skinType.join(", ") : "",
+      skinType: Array.isArray(product.skinType)
+        ? product.skinType.join(", ")
+        : "",
       isActive: typeof product.isActive === "boolean" ? product.isActive : true,
     });
 
@@ -149,9 +153,7 @@ export default function AdminPage() {
       }
     } catch (error) {
       console.error(error);
-      toast.error(
-        error?.response?.data?.message || "Error deleting product"
-      );
+      toast.error(error?.response?.data?.message || "Error deleting product");
     }
   };
 
@@ -171,16 +173,25 @@ export default function AdminPage() {
         currency: productForm.currency || "RON",
         stock: Number(productForm.stock || 0),
         images: productForm.images
-          ? productForm.images.split(",").map((item) => item.trim()).filter(Boolean)
+          ? productForm.images
+              .split(",")
+              .map((item) => item.trim())
+              .filter(Boolean)
           : [],
         featured: productForm.featured,
         discountPercent: Number(productForm.discountPercent || 0),
         shades: productForm.shades
-          ? productForm.shades.split(",").map((item) => item.trim()).filter(Boolean)
+          ? productForm.shades
+              .split(",")
+              .map((item) => item.trim())
+              .filter(Boolean)
           : [],
         finish: productForm.finish.trim(),
         skinType: productForm.skinType
-          ? productForm.skinType.split(",").map((item) => item.trim()).filter(Boolean)
+          ? productForm.skinType
+              .split(",")
+              .map((item) => item.trim())
+              .filter(Boolean)
           : [],
         isActive: productForm.isActive,
       };
@@ -201,9 +212,7 @@ export default function AdminPage() {
       await fetchProducts();
     } catch (error) {
       console.error(error);
-      toast.error(
-        error?.response?.data?.message || "Error saving product"
-      );
+      toast.error(error?.response?.data?.message || "Error saving product");
     } finally {
       setProductSubmitting(false);
     }
@@ -217,13 +226,47 @@ export default function AdminPage() {
     }
   }, [token]);
 
+  const getOrderTime = (order) => {
+  const createdAt = order?.createdAt;
+
+  if (!createdAt) return 0;
+
+  if (typeof createdAt === "string" || createdAt instanceof Date) {
+    const parsed = new Date(createdAt).getTime();
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  if (typeof createdAt === "object") {
+    if (typeof createdAt.seconds === "number") {
+      return createdAt.seconds * 1000;
+    }
+
+    if (typeof createdAt._seconds === "number") {
+      return createdAt._seconds * 1000;
+    }
+
+    if (typeof createdAt.toDate === "function") {
+      return createdAt.toDate().getTime();
+    }
+  }
+
+  return 0;
+};
+
+const sortedOrders = [...orders].sort((a, b) => {
+  if (!sortOrder) return 0;
+
+  const dateA = getOrderTime(a);
+  const dateB = getOrderTime(b);
+
+  return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+});
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-12">
       <div className="mb-8 rounded-[32px] bg-gradient-to-r from-pink-300 via-pink-200 to-rose-200 p-8 shadow-xl">
         <h1 className="text-4xl font-black text-gray-900">Admin Dashboard</h1>
-        <p className="mt-2 text-gray-700">
-          Manage orders and products
-        </p>
+        <p className="mt-2 text-gray-700">Manage orders and products</p>
       </div>
 
       <div className="grid gap-8">
@@ -243,7 +286,10 @@ export default function AdminPage() {
             )}
           </div>
 
-          <form onSubmit={handleSubmitProduct} className="grid gap-4 md:grid-cols-2">
+          <form
+            onSubmit={handleSubmitProduct}
+            className="grid gap-4 md:grid-cols-2"
+          >
             <input
               type="text"
               name="name"
@@ -367,7 +413,9 @@ export default function AdminPage() {
                 checked={productForm.featured}
                 onChange={handleProductChange}
               />
-              <span className="text-sm font-medium text-gray-700">Featured</span>
+              <span className="text-sm font-medium text-gray-700">
+                Featured
+              </span>
             </label>
 
             <label className="flex items-center gap-3 rounded-2xl border border-pink-100 px-4 py-3">
@@ -389,17 +437,15 @@ export default function AdminPage() {
                 {productSubmitting
                   ? "Saving..."
                   : editingProductId
-                  ? "Update Product"
-                  : "Create Product"}
+                    ? "Update Product"
+                    : "Create Product"}
               </button>
             </div>
           </form>
         </div>
 
         <div className="rounded-[32px] bg-white p-8 shadow-lg">
-          <h2 className="mb-6 text-2xl font-black text-gray-900">
-            Products
-          </h2>
+          <h2 className="mb-6 text-2xl font-black text-gray-900">Products</h2>
 
           {productsLoading ? (
             <p className="text-gray-500">Loading products...</p>
@@ -414,7 +460,9 @@ export default function AdminPage() {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={product.images?.[0] || "https://via.placeholder.com/100"}
+                      src={
+                        product.images?.[0] || "https://via.placeholder.com/100"
+                      }
                       alt={product.name}
                       className="h-20 w-20 rounded-2xl object-cover"
                     />
@@ -427,7 +475,8 @@ export default function AdminPage() {
                         {product.brand || "No brand"} • {product.price} RON
                       </p>
                       <p className="text-sm text-gray-500">
-                        Stock: {product.stock} • {product.isActive ? "Active" : "Inactive"}
+                        Stock: {product.stock} •{" "}
+                        {product.isActive ? "Active" : "Inactive"}
                       </p>
                     </div>
                   </div>
@@ -455,12 +504,28 @@ export default function AdminPage() {
 
         <div className="rounded-[32px] bg-white p-8 shadow-lg">
           <h2 className="mb-6 text-2xl font-black text-gray-900">Orders</h2>
+          <div className="mb-6 flex gap-3">
+            <button
+              onClick={() =>
+                setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"))
+              }
+              className="rounded-full border border-pink-200 px-4 py-2 text-sm font-semibold text-pink-600 hover:bg-pink-50"
+            >
+              Sort by date {sortOrder === "asc" ? "↑" : "↓"}
+            </button>
 
+            <button
+              onClick={() => setSortOrder(null)}
+              className="rounded-full border border-pink-200 px-4 py-2 text-sm font-semibold text-pink-600 hover:bg-pink-50"
+            >
+              Reset
+            </button>
+          </div>
           {ordersLoading ? (
             <div>Loading orders...</div>
           ) : (
             <div className="space-y-4">
-              {orders.map((order) => (
+              {sortedOrders.map((order) => (
                 <div key={order.id} className="rounded-[28px] bg-pink-50 p-6">
                   <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
                     <div>
@@ -473,7 +538,9 @@ export default function AdminPage() {
                     </div>
 
                     <div className="text-right">
-                      <p className="font-bold text-pink-600">{order.total} RON</p>
+                      <p className="font-bold text-pink-600">
+                        {order.total} RON
+                      </p>
                       <p className="text-sm text-gray-500">
                         Payment: {order.paymentStatus}
                       </p>
@@ -482,14 +549,19 @@ export default function AdminPage() {
 
                   <div className="mb-4 text-sm text-gray-600">
                     <p>
-                      <span className="font-semibold text-gray-900">Shipping:</span>{" "}
-                      {order.shippingAddress?.fullName}, {order.shippingAddress?.city},{" "}
+                      <span className="font-semibold text-gray-900">
+                        Shipping:
+                      </span>{" "}
+                      {order.shippingAddress?.fullName},{" "}
+                      {order.shippingAddress?.city},{" "}
                       {order.shippingAddress?.street}
                     </p>
                   </div>
 
                   <div className="mb-4">
-                    <p className="mb-2 text-sm font-semibold text-gray-900">Items</p>
+                    <p className="mb-2 text-sm font-semibold text-gray-900">
+                      Items
+                    </p>
                     <div className="space-y-2">
                       {order.items?.map((item, index) => (
                         <div
@@ -499,14 +571,22 @@ export default function AdminPage() {
                           <span>
                             {item.name} x {item.quantity}
                           </span>
-                          <span>{(item.price * item.quantity).toFixed(2)} RON</span>
+                          <span>
+                            {(item.price * item.quantity).toFixed(2)} RON
+                          </span>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-3">
-                    {["pending", "processing", "shipped", "delivered", "cancelled"].map((status) => (
+                    {[
+                      "pending",
+                      "processing",
+                      "shipped",
+                      "delivered",
+                      "cancelled",
+                    ].map((status) => (
                       <button
                         key={status}
                         onClick={() => updateStatus(order.id, status)}
